@@ -15,7 +15,7 @@
     }
   ],
   "autoload": {
-    "psr-4":{"Kaopur\\yii2-doc-online\\":""}
+    "psr-4":{"Kaopur\\yii2-doc-online\\":"src/"}
   },
   "require": {
   },
