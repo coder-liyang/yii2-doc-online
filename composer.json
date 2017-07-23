@@ -15,7 +15,9 @@
     }
   ],
   "autoload": {
-    "psr-4":{"Kaopur\\yii2_doc_online\\":"src/"}
+    "classmap": [
+      "vendor/kaopur/yii2-doc-online/src/"
+    ]
   },
   "require": {
   },
