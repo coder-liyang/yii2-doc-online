@@ -1,0 +1,9 @@
+{
+  "name":"Yii2-doc-online",
+  "description":"A online document library used by Yii2 framework.",
+  "autoload" : {
+    "classmap" : [
+      "src/", "controllers", "./"
+    ]
+  }
+}
