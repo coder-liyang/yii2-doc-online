@@ -16,7 +16,7 @@
   ],
   "autoload": {
     "classmap": [
-      "vendor/kaopur/yii2-doc-online/src/"
+      "yii2-doc-online/src/"
     ]
   },
   "require": {
