@@ -16,7 +16,7 @@
   ],
   "autoload": {
     "classmap": [
-      "yii2-doc-online/src/"
+      "src/"
     ]
   },
   "require": {
