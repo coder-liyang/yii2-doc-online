@@ -57,6 +57,11 @@ class ApiList {
         }
 
         $classesName = array_merge($classesName, $modulesClassesName);
+        foreach ($classesName as $k=>$v) {
+            if (substr($v, -10) != 'Controller') {
+                unset($classesName[$k]);
+            }
+        }
         foreach ($classesName as $className) {
             $explodeClassName = explode('\\', trim($className, '\\'));
             switch (count($explodeClassName)) {
