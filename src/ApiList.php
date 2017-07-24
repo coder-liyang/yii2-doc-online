@@ -70,8 +70,8 @@ class ApiList {
                     $service_1 = strtolower(substr($apiServerShortName, 0, -10));
                     break;
                 case 5:
-                    $apiServerShortName = $explodeClassName[4];
-                    $service_1 = $explodeClassName[2] . '.' . strtolower(substr($apiServerShortName, 0, -10));
+                    $apiServerShortName = $explodeClassName[2] . '.' . $explodeClassName[4];
+                    $service_1 = strtolower(substr($apiServerShortName, 0, -10));
                     break;
             }
             $apiServer = $className;
