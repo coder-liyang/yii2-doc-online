@@ -151,6 +151,11 @@ class ApiList {
             ksort($allApiS);
 
         }
+        foreach ($allApiS as $key=>$allApi) {
+            if (count($allApi['methods']) == 0) {
+                unset($allApiS[$key]);
+            }
+        }
         include dirname(__FILE__) . '/api_list_tpl.php';
     }
 }
