@@ -55,4 +55,4 @@ public function actionDemoapi($user_type, $sex)
 }
 ```
 #### Show ####
-![image]('./images/desc_page.png')
+![image](https://raw.githubusercontent.com/kaopur/yii2-doc-online/master/imgs/desc_page.png)
