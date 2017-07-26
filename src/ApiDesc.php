@@ -1,5 +1,6 @@
 <?php
 namespace Kaopur\yii2_doc_online;
+
 /**
  * PhalApi_Helper_ApiDesc - 在线接口描述查看 - 辅助类
  *
@@ -46,24 +47,13 @@ class ApiDesc {
                 $methodName = 'action' .ucfirst($exploade_service[2]);
                 break;
         }
-//        list($className, $methodName) = explode('.', $service);
-//        $className = ucfirst($className);
-//        $methodName = 'action' . ucfirst($methodName);
-//        $className = '\\app\\controllers\\' . $className . 'Controller';
 
         // 整合需要的类注释，包括父类注释
         $rClass = new \ReflectionClass($className);
         $classDocComment = $rClass->getDocComment();
-        while ($parent = $rClass->getParentClass()) {
-            if ($parent->getName() == 'PhalApi_Api') {
-                break;
-            }
-            $classDocComment = $parent->getDocComment() . "\n" . $classDocComment;
-            $rClass = $parent;
-        }
         $needClassDocComment = '';
         foreach (explode("\n", $classDocComment) as $comment) {
-            if (stripos($comment, '@exception') !== FALSE 
+            if (stripos($comment, '@exception') !== FALSE
                 || stripos($comment, '@return') !== FALSE) {
                 $needClassDocComment .=  "\n" . $comment;
             }
@@ -79,6 +69,14 @@ class ApiDesc {
             //标题描述
             if (empty($description) && strpos($comment, '@') === FALSE && strpos($comment, '/') === FALSE) {
                 $description = substr($comment, strpos($comment, '*') + 1);
+                continue;
+            }
+
+            //@param注释
+            $pos = stripos($comment, '@param');
+            if ($pos !== FALSE) {
+                $paramArr = explode(' ', trim(substr($comment, $pos + 7)), 3);
+                $rules[$paramArr[0]] = $paramArr;
                 continue;
             }
 
@@ -117,7 +115,7 @@ class ApiDesc {
             }
 
             //以返回字段为key，保证覆盖
-            $returns[$returnCommentArr[1]] = $returnCommentArr; 
+            $returns[$returnCommentArr[1]] = $returnCommentArr;
         }
 
 

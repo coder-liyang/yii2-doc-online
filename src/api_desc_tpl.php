@@ -38,7 +38,7 @@ echo <<<EOT
             <h3>接口参数</h3>
             <table class="ui red celled striped table" >
                 <thead>
-                    <tr><th>参数名字</th><th>类型</th><th>是否必须</th><th>默认值</th><th>其他</th><th>说明</th></tr>
+                    <tr><th>参数名字</th><th>类型</th><th>是否必须</th><th>说明</th><th>其他</th></tr>
                 </thead>
                 <tbody>
 EOT;
@@ -56,39 +56,18 @@ $typeMaps = array(
 );
 
 foreach ($rules as $key => $rule) {
-    $name = $rule['name'];
+    $name = ltrim($rule['1'], '$');
     if (!isset($rule['type'])) {
         $rule['type'] = 'string';
     }
-    $type = isset($typeMaps[$rule['type']]) ? $typeMaps[$rule['type']] : $rule['type'];
-    $require = isset($rule['require']) && $rule['require'] ? '<font color="red">必须</font>' : '可选';
-    $default = isset($rule['default']) ? $rule['default'] : '';
-    if ($default === NULL) {
-        $default = 'NULL';
-    } else if (is_array($default)) {
-        $default = json_encode($default);
-    } else if (!is_string($default)) {
-        $default = var_export($default, true);
-    }
+    $type = isset($typeMaps[$rule[0]]) ? $typeMaps[$rule[0]] : $rule[0];
+    $content_require_desc_String = trim($rule[2], '|');
+    $content_require_desc_Arr = explode('|', $content_require_desc_String);
+    $content = isset($content_require_desc_Arr[0])?$content_require_desc_Arr[0]:'无';
+    $require = isset($content_require_desc_Arr[1]) && $content_require_desc_Arr[1]=='yes'?'<font color="red">必须</font>':'可选';
+    $desc = isset($content_require_desc_Arr[2])?$content_require_desc_Arr[2]:'无';
 
-    $other = array();
-    if (isset($rule['min'])) {
-        $other[] = '最小：' . $rule['min'];
-    }
-    if (isset($rule['max'])) {
-        $other[] = '最大：' . $rule['max'];
-    }
-    if (isset($rule['range'])) {
-        $other[] = '范围：' . implode('/', $rule['range']);
-    }
-    if (isset($rule['source'])) {
-        $other[] = '数据源：' . strtoupper($rule['source']);
-    }
-    $other = implode('；', $other);
-
-    $desc = isset($rule['desc']) ? trim($rule['desc']) : '';
-
-    echo "<tr><td>$name</td><td>$type</td><td>$require</td><td>$default</td><td>$other</td><td>$desc</td></tr>\n";
+    echo "<tr><td>$name</td><td>$type</td><td>$require</td><td>$content</td><td>$desc</td></tr>\n";
 }
 
 /**
@@ -106,11 +85,11 @@ echo <<<EOT
 EOT;
 
 foreach ($returns as $item) {
-	$name = $item[1];
-	$type = isset($typeMaps[$item[0]]) ? $typeMaps[$item[0]] : $item[0];
-	$detail = $item[2];
-	
-	echo "<tr><td>$name</td><td>$type</td><td>$detail</td></tr>";
+    $name = $item[1];
+    $type = isset($typeMaps[$item[0]]) ? $typeMaps[$item[0]] : $item[0];
+    $detail = $item[2];
+
+    echo "<tr><td>$name</td><td>$type</td><td>$detail</td></tr>";
 }
 
 echo <<<EOT
@@ -166,16 +145,22 @@ echo <<<EOT
         </tr>
 EOT;
 foreach ($rules as $key => $rule){
-    $name = $rule['name'];
-    $require = isset($rule['require']) && $rule['require'] ? '<font color="red">必须</font>' : '可选';
-    $default = isset($rule['default']) ? $rule['default'] : '';
-    $desc = isset($rule['desc']) ? trim($rule['desc']) : '';
+    $name = ltrim($rule['1'], '$');
+    if (!isset($rule['type'])) {
+        $rule['type'] = 'string';
+    }
+    $type = isset($typeMaps[$rule[0]]) ? $typeMaps[$rule[0]] : $rule[0];
+    $content_require_desc_String = trim($rule[2], '|');
+    $content_require_desc_Arr = explode('|', $content_require_desc_String);
+    $content = isset($content_require_desc_Arr[0])?$content_require_desc_Arr[0]:'无';
+    $require = isset($content_require_desc_Arr[1]) && $content_require_desc_Arr[1]=='yes'?'<font color="red">必须</font>':'可选';
+    $desc = isset($content_require_desc_Arr[2])?$content_require_desc_Arr[2]:'无';
     $inputType = (isset($rule['type']) && $rule['type'] == 'file') ? 'file' : 'text';
     echo <<<EOT
         <tr>
             <td>{$name}</td>
             <td>{$require}</td>
-            <td><input name="{$name}" value="{$default}" placeholder="{$desc}" style="width:100%;" class="C_input" type="$inputType"/></td>
+            <td><input name="{$name}" value="" placeholder="{$desc}" style="width:100%;" class="C_input" type="$inputType"/></td>
         </tr>
 EOT;
 }
@@ -247,7 +232,6 @@ echo <<<EOT
                 })
             })
 
-            checkLastestVersion();
         })
 
         $('#version_update').html('&nbsp; | &nbsp; <a target="_blank" href="http://www.liyangweb.com"><strong>kaopur移植至Yii2</strong></a>');
