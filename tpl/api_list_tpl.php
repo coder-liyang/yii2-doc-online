@@ -97,10 +97,11 @@ $table_color_arr = explode(" ", "red orange yellow olive teal blue violet purple
                             <?php
                             $num = 1;
                             foreach ($item['methods'] as $mKey => $mItem) {
+                                $mItem_service = str_replace('.', '/' , $mItem['service']);
                                 $concator = strpos($uri, '?') ? '&' : '?';
-                                $link = $uri . $concator . 'service=' . $mItem['service'];
+                                $link = $uri . $concator . 'service=' . $mItem_service;
                                 $NO   = $num++;
-                                echo "<tr><td>{$NO}</td><td><a href=\"$link\" target='_blank'>{$mItem['service']}</a></td><td>{$mItem['title']}</td><td>{$mItem['desc']}</td></tr>";
+                                echo "<tr><td>{$NO}</td><td><a href=\"$link\" target='_blank'>{$mItem_service}</a></td><td>{$mItem['title']}</td><td>{$mItem['desc']}</td></tr>";
                             }
                             ?>
                             </tbody>
