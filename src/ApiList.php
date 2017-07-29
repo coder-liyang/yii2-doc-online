@@ -135,7 +135,7 @@ class ApiList {
                 }
                 //兼容模块里的控制器
                 $service[] = strtolower(substr($mValue, 6));
-                $service_string = implode('.', $service);
+                $service_string = implode('/', $service);
                 $allApiS[$apiServerShortName]['methods'][$service_string] = array(
                     'service' => $service_string,
                     'title'   => $title,
@@ -156,7 +156,7 @@ class ApiList {
                 unset($allApiS[$key]);
             }
         }
-        include dirname(__FILE__) . '/api_list_tpl.php';
+        include dirname(__FILE__) . '/../tpl/api_list_tpl.php';
     }
 }
 

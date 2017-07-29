@@ -34,7 +34,7 @@ class ApiDesc {
         $descComment = '//请使用@desc 注释';
         $exceptions = array();
 
-        $exploade_service = explode('.', $service);
+        $exploade_service = explode('/', $service);
         switch (count($exploade_service)) {
             case 2:
                 $classNameTpl = '\\app\\controllers\\%sController';
@@ -119,6 +119,6 @@ class ApiDesc {
         }
 
 
-        include dirname(__FILE__) . '/api_desc_tpl.php';
+        include dirname(__FILE__) . '/../tpl/api_desc_tpl.php';
     }
 }

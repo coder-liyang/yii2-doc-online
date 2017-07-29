@@ -56,12 +56,12 @@ $typeMaps = array(
 );
 
 foreach ($rules as $key => $rule) {
-    $name = ltrim($rule['1'], '$');
+    $name = isset($rule['1'])?ltrim($rule['1'], '$'):'';
     if (!isset($rule['type'])) {
         $rule['type'] = 'string';
     }
     $type = isset($typeMaps[$rule[0]]) ? $typeMaps[$rule[0]] : $rule[0];
-    $content_require_desc_String = trim($rule[2], '|');
+    $content_require_desc_String = isset($rule[2])?trim($rule[2], '|'):'';
     $content_require_desc_Arr = explode('|', $content_require_desc_String);
     $content = isset($content_require_desc_Arr[0])?$content_require_desc_Arr[0]:'无';
     $require = isset($content_require_desc_Arr[1]) && $content_require_desc_Arr[1]=='yes'?'<font color="red">必须</font>':'可选';
@@ -138,11 +138,6 @@ echo <<<EOT
         <tr><th>参数</th><th>是否必填</th><th>值</th></tr>
     </thead>
     <tbody id="params">
-        <tr>
-            <td>service</td>
-            <td><font color="red">必须</font></td>
-            <td><input name="service" value="{$service}" style="width:100%;" class="C_input" /></td>
-        </tr>
 EOT;
 foreach ($rules as $key => $rule){
     $name = ltrim($rule['1'], '$');
@@ -150,7 +145,7 @@ foreach ($rules as $key => $rule){
         $rule['type'] = 'string';
     }
     $type = isset($typeMaps[$rule[0]]) ? $typeMaps[$rule[0]] : $rule[0];
-    $content_require_desc_String = trim($rule[2], '|');
+    $content_require_desc_String = isset($rule[2])?trim($rule[2], '|'):'';
     $content_require_desc_Arr = explode('|', $content_require_desc_String);
     $content = isset($content_require_desc_Arr[0])?$content_require_desc_Arr[0]:'无';
     $require = isset($content_require_desc_Arr[1]) && $content_require_desc_Arr[1]=='yes'?'<font color="red">必须</font>':'可选';
@@ -173,9 +168,10 @@ echo <<<EOT
         <option value="GET">GET</option>
     </select>
 EOT;
-$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) ? 'https://' : 'http://';
-$url = $url . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost');
-$url .= substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/') + 1);
+//$url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']) ? 'https://' : 'http://';
+//$url = $url . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost');
+//$url .= substr($_SERVER['SCRIPT_NAME'], 0, strrpos($_SERVER['SCRIPT_NAME'], '/') + 1);
+$url = \Yii::$app->urlManager->createAbsoluteUrl("{$service}");
 echo <<<EOT
 &nbsp;<input name="request_url" value="{$url}" style="width:500px; height:24px; line-height:18px; font-size:13px;position:relative; padding-left:5px;margin-left: 10px"/>
     <input type="submit" name="submit" value="发送" id="submit" style="font-size:14px;line-height: 20px;margin-left: 10px "/>
@@ -195,7 +191,7 @@ EOT;
  */
 echo <<<EOT
         <div class="ui blue message">
-          <strong>温馨提示：</strong> 此接口参数列表根据后台代码自动生成，可将 ?service= 改成您需要查询的接口/服务
+          <strong>温馨提示：</strong> 此接口参数列表根据后台代码自动生成，可将 ?r= 改成您需要查询的接口/服务
         </div>
         <p>&copy; Powered  By <a href="http://www.phalapi.net/" target="_blank">PhalApi </a><span id="version_update"></span></p>
         </div>
