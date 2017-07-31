@@ -189,6 +189,7 @@ EOT;
 /**
  * 底部
  */
+$_csrf = \Yii::$app->request->getCsrfToken();
 echo <<<EOT
         <div class="ui blue message">
           <strong>温馨提示：</strong> 此接口参数列表根据后台代码自动生成，可将 ?r= 改成您需要查询的接口/服务
@@ -204,6 +205,9 @@ echo <<<EOT
                     data[e.name] = e.value;
                 }
             });
+            if ($("select").val() == 'POST') {
+                data['_csrf'] = "$_csrf";
+            }
             return data;
         }
         
