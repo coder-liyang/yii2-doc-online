@@ -57,7 +57,7 @@ $typeMaps = array(
 
 foreach ($rules as $key => $rule) {
     $name = isset($rule['1'])?ltrim($rule['1'], '$'):'';
-    if (!isset($rule['type'])) {
+    if (!isset($rule['0'])) {
         $rule['type'] = 'string';
     }
     $type = isset($typeMaps[$rule[0]]) ? $typeMaps[$rule[0]] : $rule[0];
