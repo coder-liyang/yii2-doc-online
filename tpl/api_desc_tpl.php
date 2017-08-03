@@ -65,7 +65,7 @@ foreach ($rules as $key => $rule) {
     $content_require_desc_Arr = explode('|', $content_require_desc_String);
     $content = isset($content_require_desc_Arr[0])?$content_require_desc_Arr[0]:'无';
     $require = isset($content_require_desc_Arr[1]) && $content_require_desc_Arr[1]=='yes'?'<font color="red">必须</font>':'可选';
-    $desc = isset($content_require_desc_Arr[2])?$content_require_desc_Arr[2]:'无';
+    $desc = isset($content_require_desc_Arr[2])?htmlentities($content_require_desc_Arr[2]):'无';
 
     echo "<tr><td>$name</td><td>$type</td><td>$require</td><td>$content</td><td>$desc</td></tr>\n";
 }
