@@ -85,7 +85,7 @@ class ApiList {
             $docComment = $ref->getDocComment();
             if ($docComment !== false) {
                 $docCommentArr = explode("\n", $docComment);
-                $comment       = trim($docCommentArr[1]);
+                $comment       = isset($docCommentArr[1])?trim($docCommentArr[1]):'';
                 $title         = trim(substr($comment, strpos($comment, '*') + 1));
                 foreach ($docCommentArr as $comment) {
                     $pos = stripos($comment, '@desc');
