@@ -57,7 +57,7 @@ $typeMaps = array(
 
 foreach ($rules as $key => $rule) {
     $name = isset($rule['1'])?ltrim($rule['1'], '$'):'';
-    if (!isset($rule['type'])) {
+    if (!isset($rule['0'])) {
         $rule['type'] = 'string';
     }
     $type = isset($typeMaps[$rule[0]]) ? $typeMaps[$rule[0]] : $rule[0];
@@ -65,7 +65,7 @@ foreach ($rules as $key => $rule) {
     $content_require_desc_Arr = explode('|', $content_require_desc_String);
     $content = isset($content_require_desc_Arr[0])?$content_require_desc_Arr[0]:'无';
     $require = isset($content_require_desc_Arr[1]) && $content_require_desc_Arr[1]=='yes'?'<font color="red">必须</font>':'可选';
-    $desc = isset($content_require_desc_Arr[2])?$content_require_desc_Arr[2]:'无';
+    $desc = isset($content_require_desc_Arr[2])?htmlentities($content_require_desc_Arr[2]):'无';
 
     echo "<tr><td>$name</td><td>$type</td><td>$require</td><td>$content</td><td>$desc</td></tr>\n";
 }
@@ -189,6 +189,7 @@ EOT;
 /**
  * 底部
  */
+$_csrf = \Yii::$app->request->getCsrfToken();
 echo <<<EOT
         <div class="ui blue message">
           <strong>温馨提示：</strong> 此接口参数列表根据后台代码自动生成，可将 ?r= 改成您需要查询的接口/服务
@@ -204,6 +205,9 @@ echo <<<EOT
                     data[e.name] = e.value;
                 }
             });
+            if ($("select").val() == 'POST') {
+                data['_csrf'] = "$_csrf";
+            }
             return data;
         }
         
