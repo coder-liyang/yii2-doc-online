@@ -35,14 +35,15 @@ class ApiDesc {
         $exceptions = array();
 
         $exploade_service = explode('/', $service);
+        $item = \Yii::$app->modules['doconline']->item;
         switch (count($exploade_service)) {
             case 2:
-                $classNameTpl = '\\app\\controllers\\%sController';
+                $classNameTpl = "\\$item\\controllers\\%sController";
                 $className = sprintf($classNameTpl, ucfirst($exploade_service[0]));
                 $methodName = 'action' .ucfirst($exploade_service[1]);
                 break;
             case 3:
-                $classNameTpl = '\\app\\modules\\%s\\controllers\\%sController';
+                $classNameTpl = "\\$item\\modules\\%s\\controllers\\%sController";
                 $className = sprintf($classNameTpl, $exploade_service[0], ucfirst($exploade_service[1]));
                 $methodName = 'action' .ucfirst($exploade_service[2]);
                 break;
