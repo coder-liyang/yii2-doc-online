@@ -13,7 +13,7 @@ composer require kaopur/yii2-doc-online
     ```
     'modules' => [
         'doconline' => [
-            'item' => 'frontend',
+            'item' => 'app',//app、frontend、backend
             'class' => 'Kaopur\yii2_doc_online\Module',
             'defaultRoute' => 'index', //默认控制器
             'appControllers' => true, //是否检测app\controllers命名空间下的控制器
