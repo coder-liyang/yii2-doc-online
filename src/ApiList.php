@@ -36,7 +36,8 @@ class ApiList {
         if ($this->appControllers) {
             $files = listDir(API_ROOT . D_S . $apiDirName);
             $classesName = array_map(function($file){
-                $classNameTemp = '/app' . rtrim(strstr($file, '/controllers/'), '.php');
+                $item = \Yii::$app->modules['doconline']->item;
+                $classNameTemp = "/$item" . rtrim(strstr($file, '/controllers/'), '.php');
                 $className = str_replace('/', '\\', $classNameTemp);
                 return $className;
             }, $files);
@@ -46,7 +47,8 @@ class ApiList {
             $moduleDirName = '../modules/' . $module . '/controllers';
             $moduleFiles = listDir(API_ROOT . D_S . $moduleDirName);
             return array_map(function($moduleFile) use ($module) {
-                $namespace = '\\app\\modules\\%s\\controllers\\%s';
+                $item = \Yii::$app->modules['doconline']->item;
+                $namespace = "\\$item\\modules\\%s\\controllers\\%s";
                 $className = rtrim(substr($moduleFile, strrpos($moduleFile, D_S) + 1), '.php');
                 return sprintf($namespace, $module, $className);
             }, $moduleFiles);
@@ -85,7 +87,7 @@ class ApiList {
             $docComment = $ref->getDocComment();
             if ($docComment !== false) {
                 $docCommentArr = explode("\n", $docComment);
-                $comment       = isset($docCommentArr[1])?trim($docCommentArr[1]):'';
+                $comment       = trim($docCommentArr[1]);
                 $title         = trim(substr($comment, strpos($comment, '*') + 1));
                 foreach ($docCommentArr as $comment) {
                     $pos = stripos($comment, '@desc');
