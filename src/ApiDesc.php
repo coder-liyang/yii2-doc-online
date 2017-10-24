@@ -77,7 +77,7 @@ class ApiDesc {
             //@param注释
             $pos = stripos($comment, '@param');
             if ($pos !== FALSE) {
-                $paramArr = explode(' ', trim(substr($comment, $pos + 7)), 3);
+                $paramArr = explode(' ', trim(substr(trim($comment), $pos + 7)), 3);
                 $rules[] = $paramArr;
                 continue;
             }
