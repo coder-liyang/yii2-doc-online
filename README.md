@@ -13,7 +13,6 @@ composer require kaopur/yii2-doc-online
     ```
     'modules' => [
         'doconline' => [
-            'item' => 'app',//app、frontend、backend
             'class' => 'Kaopur\yii2_doc_online\Module',
             'defaultRoute' => 'index', //默认控制器
             'appControllers' => true, //是否检测app\controllers命名空间下的控制器
@@ -23,6 +22,7 @@ composer require kaopur/yii2-doc-online
                 'the_module_name'
             ],
         ],
+    ],
     ```
 3. Open the url from you browser. `http://url.com?r=doconline`
 

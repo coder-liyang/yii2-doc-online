@@ -36,21 +36,21 @@ class ApiList {
         if ($this->appControllers) {
             $files = listDir(API_ROOT . D_S . $apiDirName);
             $classesName = array_map(function($file){
-                $item = \Yii::$app->modules['doconline']->item;
-                $classNameTemp = "/$item" . rtrim(strstr($file, '/controllers/'), '.php');
-                $className = str_replace('/', '\\', $classNameTemp);
+                $classNameTemp = substr(rtrim(strstr($file, '/controllers/'), '.php'), 13);
+                $className = \Yii::$app->controllerNamespace . '\\'. $classNameTemp;
                 return $className;
             }, $files);
         }
         $modulesClassesNameTemp = array_map(function($module){
+            $t = new \ReflectionClass($module);
+            $moduleNamespace = $t->getNamespaceName();
             //遍历module下的所有控制器
-            $moduleDirName = '../modules/' . $module . '/controllers';
-            $moduleFiles = listDir(API_ROOT . D_S . $moduleDirName);
-            return array_map(function($moduleFile) use ($module) {
-                $item = \Yii::$app->modules['doconline']->item;
-                $namespace = "\\$item\\modules\\%s\\controllers\\%s";
+            $moduleDirName = strrev(strstr(strrev($t->getFileName()), '/')) . 'controllers';
+            $moduleFiles = listDir($moduleDirName);
+            return array_map(function($moduleFile) use ($moduleNamespace) {
+                $namespace = $moduleNamespace . '\\controllers\\%s';
                 $className = rtrim(substr($moduleFile, strrpos($moduleFile, D_S) + 1), '.php');
-                return sprintf($namespace, $module, $className);
+                return sprintf($namespace, $className);
             }, $moduleFiles);
         }, $modules);
         $modulesClassesName = [];
@@ -87,7 +87,7 @@ class ApiList {
             $docComment = $ref->getDocComment();
             if ($docComment !== false) {
                 $docCommentArr = explode("\n", $docComment);
-                $comment       = trim($docCommentArr[1]);
+                $comment       = isset($docCommentArr[1])?trim($docCommentArr[1]):'';
                 $title         = trim(substr($comment, strpos($comment, '*') + 1));
                 foreach ($docCommentArr as $comment) {
                     $pos = stripos($comment, '@desc');

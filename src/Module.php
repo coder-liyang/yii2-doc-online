@@ -9,7 +9,6 @@ class Module extends \yii\base\Module
     public $suffix = '';
     public $prefix = '';
     public $modules = [];
-    public $item = 'app';
     public function init()
     {
         parent::init();

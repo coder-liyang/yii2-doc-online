@@ -35,20 +35,21 @@ class ApiDesc {
         $exceptions = array();
 
         $exploade_service = explode('/', $service);
-        $item = \Yii::$app->modules['doconline']->item;
         switch (count($exploade_service)) {
             case 2:
-                $classNameTpl = "\\$item\\controllers\\%sController";
+                $classNameTpl = \Yii::$app->controllerNamespace . '\\%sController';
                 $className = sprintf($classNameTpl, ucfirst($exploade_service[0]));
                 $methodName = 'action' .ucfirst($exploade_service[1]);
                 break;
             case 3:
-                $classNameTpl = "\\$item\\modules\\%s\\controllers\\%sController";
-                $className = sprintf($classNameTpl, $exploade_service[0], ucfirst($exploade_service[1]));
+                $module = \Yii::$app->modules[$exploade_service['0']]['class'];
+                $t = new \ReflectionClass($module);
+                $moduleNamespace = $t->getNamespaceName();
+                $classNameTpl = $moduleNamespace . '\\controllers\\%sController';
+                $className = sprintf($classNameTpl, ucfirst($exploade_service[1]));
                 $methodName = 'action' .ucfirst($exploade_service[2]);
                 break;
         }
-
         // 整合需要的类注释，包括父类注释
         $rClass = new \ReflectionClass($className);
         $classDocComment = $rClass->getDocComment();
