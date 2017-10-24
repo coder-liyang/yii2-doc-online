@@ -18,8 +18,8 @@ composer require kaopur/yii2-doc-online
             'appControllers' => true, //是否检测app\controllers命名空间下的控制器
             'suffix' => '', //api后缀
             'prefix' => '', //api前缀
-            'modules' => [  //需要生成文档的模块
-                'the_module_name'
+            'modules' => [  //需要生成文档的模块命名空间
+                'app\modules\admin\Module',
             ],
         ],
     ],
