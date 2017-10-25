@@ -36,18 +36,21 @@ class ApiDesc {
 
         $exploade_service = explode('/', $service);
         switch (count($exploade_service)) {
-            case 2:
+            case 2://不是模块
                 $classNameTpl = \Yii::$app->controllerNamespace . '\\%sController';
                 $className = sprintf($classNameTpl, ucfirst($exploade_service[0]));
                 $methodName = 'action' .ucfirst($exploade_service[1]);
                 break;
-            case 3:
-                $module = \Yii::$app->modules[$exploade_service['0']]['class'];
+            default://是模块
+                //不论几级模块,倒数第三个一定是模块名
+                $c = count($exploade_service);
+                $moduleName = $exploade_service[$c-3];
+                $module = \Yii::$app->modules[$moduleName]['class'];
                 $t = new \ReflectionClass($module);
                 $moduleNamespace = $t->getNamespaceName();
                 $classNameTpl = $moduleNamespace . '\\controllers\\%sController';
-                $className = sprintf($classNameTpl, ucfirst($exploade_service[1]));
-                $methodName = 'action' .ucfirst($exploade_service[2]);
+                $className = sprintf($classNameTpl, ucfirst($exploade_service[$c-2]));
+                $methodName = 'action' .ucfirst($exploade_service[$c-1]);
                 break;
         }
         // 整合需要的类注释，包括父类注释

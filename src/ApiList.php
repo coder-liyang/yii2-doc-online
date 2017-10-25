@@ -66,16 +66,14 @@ class ApiList {
         }
         foreach ($classesName as $className) {
             $explodeClassName = explode('\\', trim($className, '\\'));
-            switch (count($explodeClassName)) {
-                case 3:
-                    $apiServerShortName = $explodeClassName[2];
-                    $service_1 = strtolower(substr($apiServerShortName, 0, -10));
-                    break;
-                case 5:
-                    $apiServerShortName = $explodeClassName[2] . '.' . $explodeClassName[4];
-                    $service_1 = strtolower(substr($apiServerShortName, 0, -10));
-                    break;
+            $c = count($explodeClassName);
+            if ($c > 3) {
+                unset($explodeClassName[$c-2]);
             }
+            unset($explodeClassName[0]);
+            unset($explodeClassName[1]);
+            $apiServerShortName = implode('.', $explodeClassName);//ok
+            $service_1 = strtolower(substr($apiServerShortName, 0, -10));
             $apiServer = $className;
             if (!class_exists($className)) {
                 continue;
