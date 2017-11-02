@@ -4,7 +4,6 @@
 ```
 composer require kaopur/yii2-doc-online
 ```
-
 ### How to use? ###
 1. Install the library.
 2. Create a new module config to web.php like this:
