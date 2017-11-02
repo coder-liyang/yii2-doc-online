@@ -1,5 +1,5 @@
 ## Home page ##
-[http://www.liyangweb.com](http://www.liyangweb.com)
+[http://www.liyangweb.com/php/311.html](http://www.liyangweb.com/php/311.html)
 ### How to install? ###
 ```
 composer require kaopur/yii2-doc-online
