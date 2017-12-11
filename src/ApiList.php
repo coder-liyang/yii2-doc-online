@@ -36,7 +36,7 @@ class ApiList {
         if ($this->appControllers) {
             $files = listDir(API_ROOT . D_S . $apiDirName);
             $classesName = array_map(function($file){
-                $classNameTemp = substr(rtrim(strstr($file, '/controllers/'), '.php'), 13);
+                $classNameTemp = basename($file,'.php');
                 $className = \Yii::$app->controllerNamespace . '\\'. $classNameTemp;
                 return $className;
             }, $files);
@@ -45,7 +45,7 @@ class ApiList {
             $t = new \ReflectionClass($module);
             $moduleNamespace = $t->getNamespaceName();
             //遍历module下的所有控制器
-            $moduleDirName = strrev(strstr(strrev($t->getFileName()), '/')) . 'controllers';
+            $moduleDirName = strrev(strstr(strrev($t->getFileName()), D_S)) . 'controllers';
             $moduleFiles = listDir($moduleDirName);
             return array_map(function($moduleFile) use ($moduleNamespace) {
                 $namespace = $moduleNamespace . '\\controllers\\%s';
